@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Review {{ exam.title }} | ExamSystem Pro{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <a href="/" class="text-sm font-medium text-blue-600 hover:text-blue-500 mb-4 inline-flex items-center">
+        &larr; Back to Dashboard
+    </a>
+    <div class="mt-2 flex items-center justify-between">
+        <h2 class="text-3xl font-bold leading-7 text-slate-900">{{ exam.title }} - Submissions</h2>
+        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+            Total: {{ sessions|length }}
+        </span>
+    </div>
+</div>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-xl border border-slate-200">
+    <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Student Name</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Student ID</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Started At</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Status</th>
+                <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">Action</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-200">
+            {% if not sessions %}
+            <tr>
+                <td colspan="5" class="px-6 py-12 text-center text-sm text-slate-500">
+                    No students have taken this exam yet.
+                </td>
+            </tr>
+            {% endif %}
+
+            {% for session in sessions %}
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                    {{ session.student_name }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {{ session.student_id }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    {{ session.started_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    {% if session.completed_at %}
+                    <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        Completed
+                    </span>
+                    {% else %}
+                    <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        In Progress
+                    </span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    {% if session.completed_at %}
+                    <a href="/review/session/{{ session.id }}"
+                        class="text-indigo-600 hover:text-indigo-900 font-semibold bg-indigo-50 px-3 py-1.5 rounded-md hover:bg-indigo-100 transition-colors">Review
+                        Answers</a>
+                    {% else %}
+                    <span class="text-slate-400">Not Submitted</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Exam | ExamSystem Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen items-center justify-center p-4">
+
+    <div class="max-w-md w-full">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                ExamSystem Pro</h1>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">{{ exam.title }}</h2>
+            {% if exam.description %}
+            <p class="text-slate-500 mb-6">{{ exam.description }}</p>
+            {% endif %}
+
+            <form action="/take/{{ exam.uid }}/start" method="POST" class="space-y-5">
+                <div>
+                    <label for="student_name" class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <input type="text" name="student_name" id="student_name" required autofocus
+                        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md py-2.5 px-3 border transition-colors">
+                </div>
+
+                <div>
+                    <label for="student_id" class="block text-sm font-medium text-slate-700 mb-1">Student ID /
+                        Email</label>
+                    <input type="text" name="student_id" id="student_id" required
+                        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md py-2.5 px-3 border transition-colors">
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                        Start Exam
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-6 text-center text-xs text-slate-400">
+                By starting the exam, you agree to the academic integrity policy.
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>
