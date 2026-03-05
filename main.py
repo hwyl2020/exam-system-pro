@@ -6,12 +6,17 @@ from sqlalchemy.orm import Session
 from models import get_db, Exam, Question, QuestionType, ExamSession, Answer
 import uuid
 import json
+import os
 
 app = FastAPI(title="Exam Conducting Platform")
 
+# Calculate the absolute path for the templates directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+
 # We'll create these directories later
 # app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request, db: Session = Depends(get_db)):
