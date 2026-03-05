@@ -11,6 +11,11 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./exam_platform.db")
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
+# psycopg2 does not support the "pgbouncer=true" parameter provided by Supabase
+DATABASE_URL = DATABASE_URL.replace("?pgbouncer=true&", "?")
+DATABASE_URL = DATABASE_URL.replace("?pgbouncer=true", "")
+DATABASE_URL = DATABASE_URL.replace("&pgbouncer=true", "")
+
 # Supabase requires SSL for external connections
 if "supabase" in DATABASE_URL and "sslmode=require" not in DATABASE_URL:
     if "?" in DATABASE_URL:
