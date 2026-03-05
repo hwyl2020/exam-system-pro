@@ -7,9 +7,16 @@ import os
 # Default to local SQLite if DATABASE_URL is not provided (e.g. on Render)
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./exam_platform.db")
 
-# Handle Render's postgres:// vs postgresql:// quirk if needed
+# Handle Render/Railway's postgres:// vs postgresql:// quirk if needed
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Supabase requires SSL for external connections
+if "supabase" in DATABASE_URL and "sslmode=require" not in DATABASE_URL:
+    if "?" in DATABASE_URL:
+        DATABASE_URL += "&sslmode=require"
+    else:
+        DATABASE_URL += "?sslmode=require"
 
 # Only SQLite needs check_same_thread=False
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
